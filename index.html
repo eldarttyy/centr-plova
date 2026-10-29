@@ -1,0 +1,414 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Центр Плова — плов из казана, шашлык и восточная кухня · Бишкек</title>
+  <meta name="description" content="Кафе «Центр Плова» в Бишкеке: плов из казана, лагман, куурдак, шашлык и самса. Три филиала — Жибек-Жолу, Түгөлбай Ата и 5 микрорайон. Ежедневно 10:00–23:00.">
+  <meta name="theme-color" content="#160f0c">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <script>
+    document.documentElement.classList.add('js');
+    try { if (sessionStorage.getItem('cp-intro') === '1') document.documentElement.classList.add('intro-seen'); } catch (e) {}
+  </script>
+
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@0.169.0/build/three.module.js",
+        "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.169.0/examples/jsm/"
+      }
+    }
+  </script>
+</head>
+<body>
+
+  <!-- Shared SVG symbols: kazan (brand mark), tunduk and the ram's-horn ornament -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <defs>
+      <symbol id="kazan" viewBox="0 0 100 100">
+        <g fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M38 14 C34 20 42 24 38 30 M50 10 C46 17 54 21 50 28 M62 14 C58 20 66 24 62 30"/>
+          <path d="M14 46 H86"/>
+          <path d="M18 46 C18 70 32 84 50 84 C68 84 82 70 82 46"/>
+          <path d="M18 52 C10 52 8 44 14 42 M82 52 C90 52 92 44 86 42"/>
+          <path d="M30 38 C36 34 64 34 70 38"/>
+        </g>
+        <path d="M50 58 L57 65 L50 72 L43 65 Z" fill="currentColor"/>
+      </symbol>
+      <symbol id="tunduk" viewBox="0 0 100 100">
+        <circle cx="50" cy="50" r="30" fill="none" stroke="currentColor" stroke-width="3"/>
+        <circle cx="50" cy="50" r="25" fill="none" stroke="currentColor" stroke-width="1.5"/>
+        <path d="M40 22 Q50 50 40 78 M50 20 V80 M60 22 Q50 50 60 78" fill="none" stroke="currentColor" stroke-width="2.4"/>
+        <path d="M22 40 Q50 50 78 40 M20 50 H80 M22 60 Q50 50 78 60" fill="none" stroke="currentColor" stroke-width="2.4"/>
+      </symbol>
+      <symbol id="horn" viewBox="0 0 120 120">
+        <g fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round">
+          <path id="h1" d="M60 60 C60 38 46 26 34 30 C24 34 26 48 36 46 C42 45 42 38 38 37"/>
+          <use href="#h1" transform="matrix(-1 0 0 1 120 0)"/>
+          <use href="#h1" transform="matrix(1 0 0 -1 0 120)"/>
+          <use href="#h1" transform="matrix(-1 0 0 -1 120 120)"/>
+        </g>
+        <path d="M60 48 L72 60 L60 72 L48 60 Z" fill="currentColor"/>
+      </symbol>
+      <!-- pattern content takes its colour from here, not from where it is used -->
+      <pattern id="ornament" width="120" height="120" patternUnits="userSpaceOnUse">
+        <use href="#horn" width="120" height="120" style="color:#b3262a"/>
+      </pattern>
+      <pattern id="ornament-teal" width="120" height="120" patternUnits="userSpaceOnUse">
+        <use href="#horn" width="120" height="120" style="color:#2b8a8f"/>
+      </pattern>
+      <pattern id="ornament-gold" width="120" height="120" patternUnits="userSpaceOnUse">
+        <use href="#horn" width="120" height="120" style="color:rgba(232,170,62,.07)"/>
+      </pattern>
+    </defs>
+  </svg>
+
+  <!-- ============ INTRO ============ -->
+  <div class="intro" id="intro" aria-hidden="true">
+    <svg class="intro__sun" viewBox="0 0 200 200">
+      <g class="intro__rays"></g>
+      <use href="#kazan" x="50" y="50" width="100" height="100" class="intro__tunduk"/>
+    </svg>
+    <p class="intro__word"><span>Центр</span><span>Плова</span></p>
+    <button class="intro__skip" type="button">Пропустить</button>
+  </div>
+
+  <a class="skip-link" href="#main">К содержанию</a>
+
+  <!-- ============ HEADER ============ -->
+  <header class="nav" id="nav">
+    <a href="#top" class="nav__brand" aria-label="Центр Плова — на главную">
+      <svg class="nav__mark"><use href="#kazan"/></svg>
+      <span class="nav__name">Центр <em>Плова</em></span>
+    </a>
+    <nav class="nav__links" aria-label="Основное">
+      <a href="#story">О нас</a>
+      <a href="#menu">Меню</a>
+      <a href="#halls">Залы</a>
+      <a href="#gallery">Галерея</a>
+      <a href="#reviews">Отзывы</a>
+      <a href="#visit">Филиалы</a>
+    </nav>
+    <a href="#visit" class="btn btn--ghost nav__cta">Забронировать</a>
+    <button class="nav__burger" id="burger" aria-label="Открыть меню" aria-expanded="false" aria-controls="drawer">
+      <span></span><span></span>
+    </button>
+  </header>
+
+  <div class="drawer" id="drawer" hidden>
+    <svg class="drawer__pattern" aria-hidden="true"><rect width="100%" height="100%" fill="url(#ornament)"/></svg>
+    <nav aria-label="Мобильное">
+      <a href="#story"><small>01</small>О нас</a>
+      <a href="#signature"><small>02</small>Хиты</a>
+      <a href="#menu"><small>03</small>Меню</a>
+      <a href="#halls"><small>04</small>Залы и кабинки</a>
+      <a href="#reviews"><small>05</small>Отзывы</a>
+      <a href="#visit"><small>06</small>Филиалы</a>
+    </nav>
+    <p class="drawer__foot">Бишкек · три филиала · ежедневно 10:00–23:00</p>
+  </div>
+
+  <main id="main">
+
+    <!-- ============ HERO ============ -->
+    <section class="hero" id="top">
+      <div class="hero__reels" aria-hidden="true">
+        <video class="hero__video" autoplay muted loop playsinline preload="metadata" poster="assets/video/hall-poster.jpg">
+          <source src="assets/video/hall.webm" type="video/webm">
+          <source src="assets/video/hall.mp4" type="video/mp4">
+        </video>
+        <video class="hero__video hero__video--main" autoplay muted loop playsinline preload="auto" poster="assets/video/plov-kazan-poster.jpg">
+          <source src="assets/video/plov-kazan.webm" type="video/webm">
+          <source src="assets/video/plov-kazan.mp4" type="video/mp4">
+        </video>
+        <video class="hero__video" autoplay muted loop playsinline preload="metadata" poster="assets/video/table-poster.jpg">
+          <source src="assets/video/table.webm" type="video/webm">
+          <source src="assets/video/table.mp4" type="video/mp4">
+        </video>
+      </div>
+      <div class="hero__shade"></div>
+
+      <div class="hero__content">
+        <p class="eyebrow hero__eyebrow">Кош келиңиз · Добро пожаловать</p>
+        <h1 class="hero__title">
+          <span class="line"><span>Самый вкусный</span></span>
+          <span class="line"><span><em>плов</em> в Бишкеке</span></span>
+        </h1>
+        <p class="hero__lede">Плов из большого казана, лагман ручной работы, куурдак и шашлык с мангала. Уютные залы, кабинки для компании и летние веранды — в трёх филиалах по городу.</p>
+        <div class="hero__ctas">
+          <a href="#menu" class="btn btn--solid">Смотреть меню</a>
+          <a href="#visit" class="btn btn--ghost">Наши филиалы</a>
+        </div>
+      </div>
+
+      <div class="hero__meta">
+        <div class="rating">
+          <span class="rating__score">4.5</span>
+          <span class="rating__stars" aria-hidden="true">★★★★★</span>
+          <span class="rating__label">4 500+ оценок в 2ГИС</span>
+        </div>
+        <div class="scroll-cue" aria-hidden="true"><span></span>Листайте</div>
+      </div>
+    </section>
+
+    <!-- ============ STORY ============ -->
+    <section class="story" id="story">
+      <div class="pattern-band" aria-hidden="true"><svg><rect width="100%" height="100%" fill="url(#ornament)"/></svg></div>
+
+      <div class="story__grid container">
+        <div class="story__text">
+          <p class="eyebrow reveal">01 — Казан</p>
+          <h2 class="display reveal">Всё начинается <em>с казана.</em></h2>
+          <p class="reveal">В Центральной Азии плов — это не просто блюдо, это повод собраться. Его готовят в большом чугунном <strong>казане</strong>: сначала обжаривают мясо и жёлтую морковь, потом томят рис, пока каждое зерно не пропитается ароматом.</p>
+          <p class="reveal">В «Центре Плова» мы готовим три плова — <strong>Особый</strong> на узгенском рисе, <strong>Чайханский</strong> и <strong>Праздничный</strong> с изюмом и нутом — а рядом с ними лагман, куурдак, манты, самсу и шашлык. Приходите на обед, отмечайте с семьёй или заказывайте праздничный сет на всю компанию.</p>
+          <a href="#menu" class="link-arrow reveal">Что сегодня в казане</a>
+        </div>
+        <figure class="story__media">
+          <div class="frame frame--tall parallax-wrap">
+            <img src="assets/photos/kazan.jpg" alt="Повар перемешивает плов в большом казане" loading="lazy" data-parallax>
+          </div>
+          <figure class="story__inset frame">
+            <img src="assets/photos/plov-trio.jpg" alt="Три вида плова на деревянном столе" loading="lazy">
+          </figure>
+          <figcaption>Особый · Чайханский · Праздничный</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <!-- ============ PILLARS ============ -->
+    <section class="pillars container" aria-label="Что мы делаем">
+      <article class="pillar reveal">
+        <div class="frame"><img src="assets/photos/plov-table.jpg" alt="Плов с мясом и салатом на столе" loading="lazy"></div>
+        <p class="pillar__num">01</p>
+        <h3>Плов <em>из казана</em></h3>
+        <p>Жёлтая морковь, нежная телятина и рис, который томится до последнего зерна. Добавьте чучук, перепелиные яйца и острый вах-вах.</p>
+      </article>
+      <article class="pillar reveal">
+        <div class="frame"><img src="assets/photos/shashlik-spread.jpg" alt="Люля-кебаб, рёбрышки и плов на столе" loading="lazy"></div>
+        <p class="pillar__num">02</p>
+        <h3>Огонь <em>мангала</em></h3>
+        <p>Рёбрышки барашка, люля-кебаб, баранина и форель на углях — и стейки рибай, ковбой и Т-бон для тех, кто пришёл голодным.</p>
+      </article>
+      <article class="pillar reveal">
+        <div class="frame"><img src="assets/photos/booth-lamps.jpg" alt="Уютная кабинка с красными светильниками и восточными подушками" loading="lazy"></div>
+        <p class="pillar__num">03</p>
+        <h3>Дасторкон <em>для своих</em></h3>
+        <p>Отдельные кабинки, тапчаны и большие столы — для семейного обеда, дня рождения или встречи с друзьями.</p>
+      </article>
+    </section>
+
+    <!-- ============ 3D SIGNATURE ============ -->
+    <section class="signature" id="signature">
+      <svg class="signature__pattern" aria-hidden="true"><rect width="100%" height="100%" fill="url(#ornament-gold)"/></svg>
+      <div class="signature__inner container">
+        <div class="signature__copy">
+          <p class="eyebrow">02 — Наши хиты</p>
+          <h2 class="display">Поверните тарелку.<br><em>Рассмотрите ближе.</em></h2>
+          <div class="dish-info" aria-live="polite">
+            <p class="dish-info__count"><span id="dishIndex">01</span> / <span id="dishTotal">04</span></p>
+            <h3 class="dish-info__name" id="dishName">Плов</h3>
+            <p class="dish-info__native" id="dishNative">Палоо · из казана</p>
+            <p class="dish-info__desc" id="dishDesc"></p>
+          </div>
+          <div class="dish-nav">
+            <button class="round-btn" id="dishPrev" aria-label="Предыдущее блюдо">←</button>
+            <button class="round-btn" id="dishNext" aria-label="Следующее блюдо">→</button>
+            <span class="dish-nav__hint">Потяните, чтобы повернуть</span>
+          </div>
+        </div>
+        <div class="signature__stage">
+          <div class="stage-glow" aria-hidden="true"></div>
+          <canvas id="dishCanvas" aria-label="Интерактивная 3D-модель выбранного блюда"></canvas>
+          <p class="stage-fallback" hidden>3D-просмотр недоступен на этом устройстве.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ MENU ============ -->
+    <section class="menu" id="menu">
+      <div class="container">
+        <header class="section-head">
+          <p class="eyebrow reveal">03 — Меню</p>
+          <h2 class="display reveal">Что сегодня <em>на дасторконе</em></h2>
+          <p class="section-head__note reveal">Ежедневно 10:00–23:00 · в зале, с собой и с доставкой. <strong>Цены в сомах.</strong> Вес шашлыка указан в сыром виде. Большие сеты на компанию лучше заказывать заранее.</p>
+        </header>
+
+        <div class="menu__tabs" role="tablist" aria-label="Разделы меню" id="menuTabs"></div>
+        <div class="menu__panel" id="menuPanel" role="tabpanel"></div>
+      </div>
+    </section>
+
+    <!-- ============ HALLS ============ -->
+    <section class="halls" id="halls">
+      <div class="container">
+        <header class="section-head section-head--dark">
+          <p class="eyebrow reveal">04 — Залы и кабинки</p>
+          <h2 class="display reveal">Красные фонари, <em>восточный уют</em></h2>
+          <p class="section-head__note reveal">Росписи, резные перегородки, бархатные подушки и тёплый свет. Кабинки и столики бронируйте по телефону нужного филиала.</p>
+        </header>
+        <div class="halls__grid">
+          <figure class="h h--a frame reveal"><img src="assets/photos/hall-arches.jpg" alt="Зал с красными арками и росписью" loading="lazy"></figure>
+          <figure class="h h--b frame reveal"><img src="assets/photos/lanterns.jpg" alt="Официантка в зале под красными фонарями" loading="lazy"></figure>
+          <figure class="h h--c frame reveal"><img src="assets/photos/cushions.jpg" alt="Кабинка с подушками в казахском орнаменте" loading="lazy"></figure>
+          <figure class="h h--d frame reveal"><img src="assets/photos/hall-wide.jpg" alt="Большой зал с красными люстрами" loading="lazy"></figure>
+          <figure class="h h--e frame reveal"><img src="assets/photos/terrace-evening.jpg" alt="Летняя веранда вечером с гирляндами" loading="lazy"></figure>
+          <figure class="h h--f frame reveal"><img src="assets/photos/tunduk.jpg" alt="Тюндюк — купол юрты под потолком" loading="lazy"></figure>
+        </div>
+        <ul class="badges badges--halls reveal">
+          <li>Кабинки</li><li>Тапчаны</li><li>Летние веранды</li><li>Банкеты и тои</li><li>Детская площадка</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ============ GALLERY ============ -->
+    <section class="gallery" id="gallery">
+      <div class="gallery__head container">
+        <p class="eyebrow">05 — Из нашего Instagram</p>
+        <h2 class="display">Стол, которым <em>хочется делиться</em></h2>
+      </div>
+      <div class="gallery__track" id="galleryTrack">
+        <figure class="g g--w"><img src="assets/photos/plov-festive.jpg" alt="Праздничный плов с долмой и перепелиными яйцами" loading="lazy"><figcaption>Праздничный плов</figcaption></figure>
+        <figure class="g"><img src="assets/photos/manti.jpg" alt="Манты с соусом" loading="lazy"><figcaption>Манты</figcaption></figure>
+        <figure class="g"><img src="assets/photos/lagman.jpg" alt="Лагман с говядиной и овощами" loading="lazy"><figcaption>Лагман</figcaption></figure>
+        <figure class="g"><img src="assets/photos/hall-mural.jpg" alt="Зал с росписью на стенах" loading="lazy"><figcaption>Жибек-Жолу</figcaption></figure>
+        <figure class="g"><img src="assets/photos/gulchatai.jpg" alt="Гульчатай с кониной" loading="lazy"><figcaption>Гульчатай</figcaption></figure>
+        <figure class="g"><img src="assets/photos/samsa.jpg" alt="Самса с соусом" loading="lazy"><figcaption>Самса</figcaption></figure>
+        <figure class="g"><img src="assets/photos/table-lunch.jpg" alt="Обед: суп, самса и плов" loading="lazy"><figcaption>Обед в кабинке</figcaption></figure>
+        <figure class="g"><img src="assets/photos/zharkoe.jpg" alt="Жаровня из говядины на чугунной сковороде" loading="lazy"><figcaption>Жаровня</figcaption></figure>
+        <figure class="g"><img src="assets/photos/hall-lamps.jpg" alt="Зал с красными лампами" loading="lazy"><figcaption>Под фонарями</figcaption></figure>
+        <figure class="g"><img src="assets/photos/teriyaki.jpg" alt="Курица терияки с рисом" loading="lazy"><figcaption>Курица терияки</figcaption></figure>
+        <figure class="g"><img src="assets/photos/tea.jpg" alt="Фруктовый чай в чайниках" loading="lazy"><figcaption>Чай</figcaption></figure>
+        <figure class="g"><img src="assets/photos/storefront.jpg" alt="Вывеска «Центр Плова» над входом" loading="lazy"><figcaption>Добро пожаловать</figcaption></figure>
+      </div>
+    </section>
+
+    <!-- ============ REVIEWS ============ -->
+    <section class="reviews" id="reviews" aria-labelledby="reviewsTitle">
+      <div class="reviews__grid container">
+        <div class="reviews__voices">
+          <p class="eyebrow">06 — Книга гостей</p>
+          <div class="score">
+            <span class="score__num">4.5</span>
+            <div>
+              <span class="score__stars" aria-hidden="true">★★★★★</span>
+              <a class="score__label" href="https://2gis.kg/bishkek/search/%D0%A6%D0%B5%D0%BD%D1%82%D1%80%20%D0%BF%D0%BB%D0%BE%D0%B2%D0%B0" target="_blank" rel="noopener">4 500+ оценок в 2ГИС →</a>
+            </div>
+          </div>
+          <div class="voices__slides" id="voices">
+            <blockquote class="voice is-active">
+              <p>«Плов и мясо по-казахски очень вкусные, все ингредиенты свежие».</p>
+              <cite>Гость · 2ГИС</cite>
+            </blockquote>
+            <blockquote class="voice">
+              <p>«Внутри очень приятно и уютно, есть отдельные столики и тапчаны».</p>
+              <cite>Гость · 2ГИС</cite>
+            </blockquote>
+            <blockquote class="voice">
+              <p>«Вкусно. Шашлык, салат, особенно салат с баклажанами. Советую».</p>
+              <cite>Гость · 2ГИС</cite>
+            </blockquote>
+          </div>
+          <p class="voices__count"><span id="voiceIndex">1</span> / 3</p>
+        </div>
+
+        <div class="rate-card">
+          <svg class="rate-card__pattern" aria-hidden="true"><rect width="100%" height="100%" fill="url(#ornament-gold)"/></svg>
+          <h2 class="rate-card__title" id="reviewsTitle">Как вам <em>наш плов?</em></h2>
+          <p class="rate-card__lede">Каждый отзыв помогает нам становиться лучше. Выберите филиал, где вы были, — это займёт полминуты.</p>
+
+          <div class="branch-pick" role="radiogroup" aria-label="Филиал" id="reviewBranches"></div>
+
+          <fieldset class="stars" id="stars">
+            <legend class="sr-only">Оцените визит</legend>
+            <button type="button" data-v="1" aria-label="1 звезда">★</button>
+            <button type="button" data-v="2" aria-label="2 звезды">★</button>
+            <button type="button" data-v="3" aria-label="3 звезды">★</button>
+            <button type="button" data-v="4" aria-label="4 звезды">★</button>
+            <button type="button" data-v="5" aria-label="5 звёзд">★</button>
+          </fieldset>
+          <p class="stars__hint" id="starsHint" aria-live="polite">Нажмите на звезду — мы откроем 2ГИС, чтобы ваша оценка засчиталась.</p>
+
+          <div class="rate-card__actions">
+            <a class="btn btn--solid" id="reviewLink" href="#" target="_blank" rel="noopener">Оставить отзыв в 2ГИС</a>
+            <button class="btn btn--ghost" type="button" id="copyReview">Скопировать ссылку</button>
+          </div>
+
+          <div class="rate-card__qr">
+            <div class="qr" id="reviewQr" role="img" aria-label="QR-код со ссылкой на отзывы выбранного филиала в 2ГИС"></div>
+            <p><strong>С телефона?</strong> Отсканируйте код и оставьте отзыв прямо за столом.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ VISIT ============ -->
+    <section class="visit" id="visit">
+      <div class="container">
+        <header class="section-head section-head--dark">
+          <p class="eyebrow reveal">07 — Филиалы</p>
+          <h2 class="display reveal">Три адреса, <em>один казан</em></h2>
+          <p class="section-head__note reveal">Все филиалы работают ежедневно с 10:00 до 23:00. Бронь кабинок и столиков, заказ с собой и доставка — по телефону филиала.</p>
+        </header>
+        <div class="visit__grid">
+          <div class="branches" id="branches" role="tablist" aria-label="Филиалы"></div>
+          <div class="visit__map frame">
+            <iframe id="branchMap" title="Карта филиала «Центр Плова»" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+          </div>
+        </div>
+        <div class="order reveal" id="order">
+          <p class="order__label">Доставка и заказ с собой</p>
+          <div class="order__buttons">
+            <a class="order-btn order-btn--glovo" data-delivery="glovo" target="_blank" rel="noopener" hidden><span class="order-btn__dot"></span>Glovo</a>
+            <a class="order-btn order-btn--yandex" data-delivery="yandex" target="_blank" rel="noopener" hidden><span class="order-btn__dot"></span>Яндекс Еда</a>
+            <a class="order-btn" href="https://www.instagram.com/centr_plova/" target="_blank" rel="noopener"><span class="order-btn__dot"></span>Написать в Instagram</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ FINAL CTA ============ -->
+    <section class="final">
+      <video class="final__video" muted loop playsinline preload="none" poster="assets/video/lanterns-poster.jpg" data-lazy-video>
+        <source src="assets/video/lanterns.webm" type="video/webm">
+        <source src="assets/video/lanterns.mp4" type="video/mp4">
+      </video>
+      <div class="final__shade"></div>
+      <div class="final__content container">
+        <svg class="final__mark" aria-hidden="true"><use href="#kazan"/></svg>
+        <h2 class="display">Чай уже заварен.<br><em>Ваш стол ждёт.</em></h2>
+        <div class="hero__ctas">
+          <a href="#visit" class="btn btn--solid">Забронировать стол</a>
+          <a href="#reviews" class="btn btn--ghost">Оставить отзыв</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ============ FOOTER ============ -->
+  <footer class="footer">
+    <div class="pattern-band pattern-band--thin" aria-hidden="true"><svg><rect width="100%" height="100%" fill="url(#ornament)"/></svg></div>
+    <div class="footer__grid container">
+      <div>
+        <a href="#top" class="nav__brand"><svg class="nav__mark"><use href="#kazan"/></svg><span class="nav__name">Центр <em>Плова</em></span></a>
+        <p class="footer__tag">У нас самый вкусный плов 🧡<br>Ак жол — доброго пути!</p>
+      </div>
+      <div><h4>Жибек-Жолу</h4><p>пр. Жибек-Жолу, 527<br><a href="tel:+996550887777">0550 887 777</a></p></div>
+      <div><h4>Түгөлбай Ата</h4><p>ул. Түгөлбай Ата, 1/1<br><a href="tel:+996777977779">0777 977 779</a></p></div>
+      <div><h4>5 микрорайон</h4><p>5 мкр, 66Б<br><a href="tel:+996556777779">0556 777 779</a></p></div>
+    </div>
+    <p class="footer__legal container">© <span id="year">2026</span> Центр Плова, Бишкек · Ежедневно 10:00–23:00 · <a href="https://www.instagram.com/centr_plova/" target="_blank" rel="noopener">@centr_plova</a></p>
+  </footer>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>

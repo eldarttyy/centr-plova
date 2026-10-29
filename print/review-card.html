@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Центр Плова — карточка на стол</title>
+  <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,500;1,300&family=Jost:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    /* Print on A4 landscape: two A5 cards per sheet, cut down the middle. */
+    @page { size: A4 landscape; margin: 0; }
+    :root { --felt: #a51f24; --felt-deep: #5e1114; --saffron: #e8aa3e; --cream: #f6ecdc; --ink: #160f0c; }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: #ddd; font-family: "Jost", sans-serif; color: var(--ink); }
+    .controls { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; padding: 24px 24px 0; }
+    .controls button { font: inherit; border: 1px solid #999; background: #fff; border-radius: 999px; padding: 8px 16px; cursor: pointer; }
+    .controls button[aria-pressed="true"] { background: var(--felt); border-color: var(--felt); color: #fff; }
+    .sheet { display: flex; justify-content: center; padding: 24px; }
+    .card {
+      width: 148.5mm; height: 210mm; background: var(--cream);
+      display: flex; flex-direction: column; align-items: center; text-align: center;
+      padding: 14mm 12mm 10mm; position: relative; overflow: hidden;
+      border-right: 1px dashed #bbb;
+    }
+    .card:last-child { border-right: 0; }
+    .band { position: absolute; left: 0; right: 0; height: 8mm; background: var(--felt-deep); }
+    .band--top { top: 0; } .band--bottom { bottom: 0; }
+    .band svg { width: 100%; height: 100%; display: block; }
+    .mark { width: 18mm; height: 18mm; color: var(--felt); margin-top: 3mm; }
+    .kicker { font-size: 10pt; letter-spacing: .3em; text-transform: uppercase; color: var(--felt); margin: 3mm 0 0; }
+    h1 { font-family: "Cormorant Garamond", serif; font-weight: 300; font-size: 32pt; line-height: 1; margin: 3mm 0 2mm; }
+    h1 em { color: var(--felt); }
+    .lede { font-size: 11pt; margin: 0 0 5mm; max-width: 100mm; }
+    .qr { width: 66mm; height: 66mm; padding: 3mm; background: #fff; border-radius: 3mm; border: 3px solid var(--saffron); }
+    .qr svg { width: 100%; height: 100%; display: block; }
+    .stars { color: var(--saffron); font-size: 22pt; letter-spacing: .1em; margin: 3mm 0 0; }
+    .cta { font-weight: 500; font-size: 12pt; letter-spacing: .14em; text-transform: uppercase; margin: 1mm 0 0; }
+    .thanks { font-family: "Cormorant Garamond", serif; font-style: italic; font-size: 16pt; color: var(--felt); margin: 3mm 0 0; }
+    .foot { margin-top: auto; margin-bottom: 8mm; display: flex; align-items: center; gap: 5mm; text-align: left; font-size: 9pt; }
+    .foot .qr { width: 22mm; height: 22mm; padding: 1mm; border-width: 1px; border-radius: 1.5mm; }
+    .foot strong { font-family: "Cormorant Garamond", serif; font-size: 15pt; font-weight: 500; display: block; }
+    .tip { text-align: center; font-size: 13px; color: #444; padding: 0 24px 24px; }
+    @media print {
+      body { background: none; }
+      .sheet { padding: 0; }
+      .tip, .controls { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <defs>
+      <symbol id="kazan" viewBox="0 0 100 100">
+        <g fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M38 14 C34 20 42 24 38 30 M50 10 C46 17 54 21 50 28 M62 14 C58 20 66 24 62 30"/>
+          <path d="M14 46 H86"/>
+          <path d="M18 46 C18 70 32 84 50 84 C68 84 82 70 82 46"/>
+          <path d="M18 52 C10 52 8 44 14 42 M82 52 C90 52 92 44 86 42"/>
+          <path d="M30 38 C36 34 64 34 70 38"/>
+        </g>
+        <path d="M50 58 L57 65 L50 72 L43 65 Z" fill="currentColor"/>
+      </symbol>
+      <symbol id="horn" viewBox="0 0 120 120">
+        <g fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round">
+          <path id="h1" d="M60 60 C60 38 46 26 34 30 C24 34 26 48 36 46 C42 45 42 38 38 37"/>
+          <use href="#h1" transform="matrix(-1 0 0 1 120 0)"/>
+          <use href="#h1" transform="matrix(1 0 0 -1 0 120)"/>
+          <use href="#h1" transform="matrix(-1 0 0 -1 120 120)"/>
+        </g>
+        <path d="M60 48 L72 60 L60 72 L48 60 Z" fill="currentColor"/>
+      </symbol>
+      <pattern id="ornament" width="30" height="30" patternUnits="userSpaceOnUse">
+        <use href="#horn" width="30" height="30" style="color:#b3262a"/>
+      </pattern>
+    </defs>
+  </svg>
+
+  <div class="controls" id="controls" aria-label="Филиал"></div>
+
+  <div class="sheet" id="sheet">
+    <template id="cardTpl">
+      <article class="card">
+        <div class="band band--top"><svg><rect width="100%" height="100%" fill="url(#ornament)"/></svg></div>
+        <svg class="mark"><use href="#kazan"/></svg>
+        <p class="kicker">Центр Плова · <span data-f="name"></span></p>
+        <h1>Как вам <em>наш плов?</em></h1>
+        <p class="lede">Оставьте отзыв в 2ГИС — он помогает нам становиться лучше, а новым гостям найти нас.</p>
+        <div class="qr" data-f="reviewQr"></div>
+        <p class="stars">★★★★★</p>
+        <p class="cta">Наведите камеру — отзыв в 2ГИС</p>
+        <p class="thanks">Рахмат — спасибо!</p>
+        <div class="foot">
+          <div class="qr" data-f="siteQr"></div>
+          <div><strong>Меню и филиалы</strong><span data-f="site"></span><br><span data-f="addr"></span> · <span data-f="phone"></span></div>
+        </div>
+        <div class="band band--bottom"><svg><rect width="100%" height="100%" fill="url(#ornament)"/></svg></div>
+      </article>
+    </template>
+  </div>
+  <p class="tip">Печать: A4, альбомная ориентация, масштаб 100 %, включите «Фоновые изображения». Разрежьте по пунктиру — получится две карточки A5.</p>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
+  <script type="module">
+    import { BRANCHES, LINKS, reviewUrl } from '../js/site-config.js';
+
+    const sheet = document.getElementById('sheet');
+    const tpl = document.getElementById('cardTpl');
+    const controls = document.getElementById('controls');
+
+    const qrSvg = (url) => {
+      const qr = window.qrcode(0, 'M');
+      qr.addData(url);
+      qr.make();
+      return qr.createSvgTag({ cellSize: 4, margin: 1, scalable: true });
+    };
+
+    function render(b) {
+      sheet.querySelectorAll('.card').forEach((c) => c.remove());
+      for (let k = 0; k < 2; k++) {
+        const card = tpl.content.cloneNode(true);
+        const f = (n) => card.querySelector(`[data-f="${n}"]`);
+        f('name').textContent = b.name;
+        f('reviewQr').innerHTML = qrSvg(reviewUrl(b));
+        f('siteQr').innerHTML = qrSvg(LINKS.website);
+        f('site').textContent = LINKS.website.replace(/^https?:\/\//, '').replace(/\/$/, '');
+        f('addr').textContent = b.address;
+        f('phone').textContent = b.phoneLabel;
+        sheet.append(card);
+      }
+      [...controls.children].forEach((btn) => btn.setAttribute('aria-pressed', String(btn.dataset.id === b.id)));
+      history.replaceState(null, '', `?b=${b.id}`);
+    }
+
+    BRANCHES.forEach((b) => {
+      const btn = Object.assign(document.createElement('button'), { type: 'button', textContent: b.name });
+      btn.dataset.id = b.id;
+      btn.addEventListener('click', () => render(b));
+      controls.append(btn);
+    });
+
+    const wanted = new URLSearchParams(location.search).get('b');
+    render(BRANCHES.find((b) => b.id === wanted) || BRANCHES[0]);
+  </script>
+</body>
+</html>
