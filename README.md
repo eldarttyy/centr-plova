@@ -6,25 +6,20 @@ and effects as the Nomad Manti site, adapted for Centr Plova.
 ```bash
 python3 -m http.server 8643     # then open http://localhost:8643
 ```
-(ES modules need a server; opening index.html from disk won't load the menu, branches or 3D.)
+(ES modules need a server; opening index.html from disk won't load the menu or branches.)
 
 ## Structure
 | Path | What |
 |---|---|
-| `index.html` | Intro, 3-reel hero, story, pillars, 3D signature dishes, menu, halls & booths, gallery, reviews, branches, footer |
+| `index.html` | Intro, 3-reel hero, story, pillars, menu, halls & booths, gallery, reviews, branches, footer |
 | `css/style.css` | Design tokens at the top (brand red, saffron, teal velvet, cream) |
 | `js/main.js` | Smooth scroll (Lenis), GSAP scroll animations, menu tabs, branch switcher + map, 2GIS review card with live QR |
 | `js/menu-data.js` | **The menu — edit prices/items here** (from the Instagram "Меню" highlight, Oct 2026; prices in сом) |
 | `js/site-config.js` | **Branches, phones, hours, 2GIS links, delivery URLs** |
-| `js/dishes3d.js` | three.js scene with 4 procedural dishes: plov, manti, boso lagman, shashlik |
 | `assets/photos/` | Food & interior photos from instagram.com/centr_plova |
 | `assets/video/` | Reels from the account, 720p, audio removed (WebM + MP4) — hero: hall / plov-kazan / table; final: lanterns |
 | `assets/source/` | Original downloaded reels (not served, git-ignored) |
 | `print/review-card.html` | Printable A5 table cards with a 2GIS review QR, one branch at a time (`?b=zhibek`, `?b=tugolbai`, `?b=mkr5`) |
-
-## Swapping in Blender models
-Export each dish as **glTF Binary (.glb)** to `assets/models/plov.glb`, `manti.glb`, `lagman.glb`,
-`shashlik.glb`. The site loads a .glb automatically if it exists, otherwise uses the procedural model.
 
 ## Before launch — check with the owner
 - `LINKS.website` in `js/site-config.js` is a placeholder (`eldarttyy.github.io/centr-plova`) — set the real

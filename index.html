@@ -17,14 +17,6 @@
     try { if (sessionStorage.getItem('cp-intro') === '1') document.documentElement.classList.add('intro-seen'); } catch (e) {}
   </script>
 
-  <script type="importmap">
-    {
-      "imports": {
-        "three": "https://cdn.jsdelivr.net/npm/three@0.169.0/build/three.module.js",
-        "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.169.0/examples/jsm/"
-      }
-    }
-  </script>
 </head>
 <body>
 
@@ -105,11 +97,10 @@
     <svg class="drawer__pattern" aria-hidden="true"><rect width="100%" height="100%" fill="url(#ornament)"/></svg>
     <nav aria-label="Мобильное">
       <a href="#story"><small>01</small>О нас</a>
-      <a href="#signature"><small>02</small>Хиты</a>
-      <a href="#menu"><small>03</small>Меню</a>
-      <a href="#halls"><small>04</small>Залы и кабинки</a>
-      <a href="#reviews"><small>05</small>Отзывы</a>
-      <a href="#visit"><small>06</small>Филиалы</a>
+      <a href="#menu"><small>02</small>Меню</a>
+      <a href="#halls"><small>03</small>Залы и кабинки</a>
+      <a href="#reviews"><small>04</small>Отзывы</a>
+      <a href="#visit"><small>05</small>Филиалы</a>
     </nav>
     <p class="drawer__foot">Бишкек · три филиала · ежедневно 10:00–23:00</p>
   </div>
@@ -203,38 +194,11 @@
       </article>
     </section>
 
-    <!-- ============ 3D SIGNATURE ============ -->
-    <section class="signature" id="signature">
-      <svg class="signature__pattern" aria-hidden="true"><rect width="100%" height="100%" fill="url(#ornament-gold)"/></svg>
-      <div class="signature__inner container">
-        <div class="signature__copy">
-          <p class="eyebrow">02 — Наши хиты</p>
-          <h2 class="display">Поверните тарелку.<br><em>Рассмотрите ближе.</em></h2>
-          <div class="dish-info" aria-live="polite">
-            <p class="dish-info__count"><span id="dishIndex">01</span> / <span id="dishTotal">04</span></p>
-            <h3 class="dish-info__name" id="dishName">Плов</h3>
-            <p class="dish-info__native" id="dishNative">Палоо · из казана</p>
-            <p class="dish-info__desc" id="dishDesc"></p>
-          </div>
-          <div class="dish-nav">
-            <button class="round-btn" id="dishPrev" aria-label="Предыдущее блюдо">←</button>
-            <button class="round-btn" id="dishNext" aria-label="Следующее блюдо">→</button>
-            <span class="dish-nav__hint">Потяните, чтобы повернуть</span>
-          </div>
-        </div>
-        <div class="signature__stage">
-          <div class="stage-glow" aria-hidden="true"></div>
-          <canvas id="dishCanvas" aria-label="Интерактивная 3D-модель выбранного блюда"></canvas>
-          <p class="stage-fallback" hidden>3D-просмотр недоступен на этом устройстве.</p>
-        </div>
-      </div>
-    </section>
-
     <!-- ============ MENU ============ -->
     <section class="menu" id="menu">
       <div class="container">
         <header class="section-head">
-          <p class="eyebrow reveal">03 — Меню</p>
+          <p class="eyebrow reveal">02 — Меню</p>
           <h2 class="display reveal">Что сегодня <em>на дасторконе</em></h2>
           <p class="section-head__note reveal">Ежедневно 10:00–23:00 · в зале, с собой и с доставкой. <strong>Цены в сомах.</strong> Вес шашлыка указан в сыром виде. Большие сеты на компанию лучше заказывать заранее.</p>
         </header>
@@ -248,7 +212,7 @@
     <section class="halls" id="halls">
       <div class="container">
         <header class="section-head section-head--dark">
-          <p class="eyebrow reveal">04 — Залы и кабинки</p>
+          <p class="eyebrow reveal">03 — Залы и кабинки</p>
           <h2 class="display reveal">Красные фонари, <em>восточный уют</em></h2>
           <p class="section-head__note reveal">Росписи, резные перегородки, бархатные подушки и тёплый свет. Кабинки и столики бронируйте по телефону нужного филиала.</p>
         </header>
@@ -269,7 +233,7 @@
     <!-- ============ GALLERY ============ -->
     <section class="gallery" id="gallery">
       <div class="gallery__head container">
-        <p class="eyebrow">05 — Из нашего Instagram</p>
+        <p class="eyebrow">04 — Из нашего Instagram</p>
         <h2 class="display">Стол, которым <em>хочется делиться</em></h2>
       </div>
       <div class="gallery__track" id="galleryTrack">
@@ -292,7 +256,7 @@
     <section class="reviews" id="reviews" aria-labelledby="reviewsTitle">
       <div class="reviews__grid container">
         <div class="reviews__voices">
-          <p class="eyebrow">06 — Книга гостей</p>
+          <p class="eyebrow">05 — Книга гостей</p>
           <div class="score">
             <span class="score__num">4.5</span>
             <div>
@@ -351,7 +315,7 @@
     <section class="visit" id="visit">
       <div class="container">
         <header class="section-head section-head--dark">
-          <p class="eyebrow reveal">07 — Филиалы</p>
+          <p class="eyebrow reveal">06 — Филиалы</p>
           <h2 class="display reveal">Три адреса, <em>один казан</em></h2>
           <p class="section-head__note reveal">Все филиалы работают ежедневно с 10:00 до 23:00. Бронь кабинок и столиков, заказ с собой и доставка — по телефону филиала.</p>
         </header>
