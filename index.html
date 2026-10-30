@@ -3,17 +3,41 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Центр Плова — плов из казана, шашлык и восточная кухня · Бишкек</title>
-  <meta name="description" content="Кафе «Центр Плова» в Бишкеке: плов из казана, лагман, куурдак, шашлык и самса. Три филиала — Жибек-Жолу, Түгөлбай Ата и 5 микрорайон. Ежедневно 10:00–23:00.">
+  <title data-i18n="meta.title">Центр Плова — плов из казана, шашлык и восточная кухня · Бишкек</title>
+  <meta name="description" data-i18n-attr="content:meta.desc" content="Кафе «Центр Плова» в Бишкеке: плов из казана, лагман, куурдак, шашлык и самса. Три филиала — Жибек-Жолу, Түгөлбай Ата и 5 микрорайон. Ежедневно 10:00–23:00.">
   <meta name="theme-color" content="#160f0c">
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="alternate" hreflang="ru" href="https://eldarttyy.github.io/centr-plova/?lang=ru">
+  <link rel="alternate" hreflang="ky" href="https://eldarttyy.github.io/centr-plova/?lang=ky">
+  <link rel="alternate" hreflang="en" href="https://eldarttyy.github.io/centr-plova/?lang=en">
+  <link rel="alternate" hreflang="x-default" href="https://eldarttyy.github.io/centr-plova/">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+  <!-- Jost has no Kyrgyz Ң Ө Ү: load just those letters from Montserrat as its fallback -->
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500&text=%D2%A2%D2%A3%D3%A8%D3%A9%D2%AE%D2%AF&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
   <script>
     document.documentElement.classList.add('js');
+    // Pick the language before first paint: ?lang= → saved choice → browser languages → Russian
+    (function () {
+      var langs = ['ru', 'ky', 'en'], source = 'ru', l, d = document.documentElement;
+      try { l = new URLSearchParams(location.search).get('lang') || localStorage.getItem('cp-lang'); } catch (e) {}
+      if (langs.indexOf(l) < 0) {
+        l = source;
+        var prefs = navigator.languages || [navigator.language];
+        for (var i = 0; i < prefs.length; i++) {
+          var code = String(prefs[i]).toLowerCase().split('-')[0];
+          if (langs.indexOf(code) > -1) { l = code; break; }
+        }
+      }
+      d.lang = l;
+      if (l !== source) {
+        d.classList.add('i18n-wait');
+        setTimeout(function () { d.classList.remove('i18n-wait'); }, 2500);
+      }
+    })();
     try { if (sessionStorage.getItem('cp-intro') === '1') document.documentElement.classList.add('intro-seen'); } catch (e) {}
   </script>
 
@@ -68,41 +92,45 @@
       <use href="#kazan" x="50" y="50" width="100" height="100" class="intro__tunduk"/>
     </svg>
     <p class="intro__word"><span>Центр</span><span>Плова</span></p>
-    <button class="intro__skip" type="button">Пропустить</button>
+    <button class="intro__skip" type="button" data-i18n="intro.skip">Пропустить</button>
   </div>
 
-  <a class="skip-link" href="#main">К содержанию</a>
+  <a class="skip-link" href="#main" data-i18n="skip">К содержанию</a>
 
   <!-- ============ HEADER ============ -->
   <header class="nav" id="nav">
-    <a href="#top" class="nav__brand" aria-label="Центр Плова — на главную">
+    <a href="#top" class="nav__brand" aria-label="Центр Плова — на главную" data-i18n-attr="aria-label:nav.home">
       <svg class="nav__mark"><use href="#kazan"/></svg>
       <span class="nav__name">Центр <em>Плова</em></span>
     </a>
-    <nav class="nav__links" aria-label="Основное">
-      <a href="#story">О нас</a>
-      <a href="#menu">Меню</a>
-      <a href="#halls">Залы</a>
-      <a href="#gallery">Галерея</a>
-      <a href="#reviews">Отзывы</a>
-      <a href="#visit">Филиалы</a>
+    <nav class="nav__links" aria-label="Основное" data-i18n-attr="aria-label:nav.primary">
+      <a href="#story" data-i18n="nav.story">О нас</a>
+      <a href="#menu" data-i18n="nav.menu">Меню</a>
+      <a href="#halls" data-i18n="nav.halls">Залы</a>
+      <a href="#gallery" data-i18n="nav.gallery">Галерея</a>
+      <a href="#reviews" data-i18n="nav.reviews">Отзывы</a>
+      <a href="#visit" data-i18n="nav.visit">Филиалы</a>
     </nav>
-    <a href="#visit" class="btn btn--ghost nav__cta">Забронировать</a>
-    <button class="nav__burger" id="burger" aria-label="Открыть меню" aria-expanded="false" aria-controls="drawer">
+    <label class="lang" data-lang-picker>
+      <span class="lang__code" aria-hidden="true">RU</span>
+      <select aria-label="Язык" data-i18n-attr="aria-label:lang.label"></select>
+    </label>
+    <a href="#visit" class="btn btn--ghost nav__cta" data-i18n="nav.cta">Забронировать</a>
+    <button class="nav__burger" id="burger" aria-label="Открыть меню" data-i18n-attr="aria-label:nav.open" aria-expanded="false" aria-controls="drawer">
       <span></span><span></span>
     </button>
   </header>
 
   <div class="drawer" id="drawer" hidden>
     <svg class="drawer__pattern" aria-hidden="true"><rect width="100%" height="100%" fill="url(#ornament)"/></svg>
-    <nav aria-label="Мобильное">
-      <a href="#story"><small>01</small>О нас</a>
-      <a href="#menu"><small>02</small>Меню</a>
-      <a href="#halls"><small>03</small>Залы и кабинки</a>
-      <a href="#reviews"><small>04</small>Отзывы</a>
-      <a href="#visit"><small>05</small>Филиалы</a>
+    <nav aria-label="Мобильное" data-i18n-attr="aria-label:nav.mobile">
+      <a href="#story"><small>01</small><span data-i18n="nav.story">О нас</span></a>
+      <a href="#menu"><small>02</small><span data-i18n="nav.menu">Меню</span></a>
+      <a href="#halls"><small>03</small><span data-i18n="drawer.halls">Залы и кабинки</span></a>
+      <a href="#reviews"><small>04</small><span data-i18n="nav.reviews">Отзывы</span></a>
+      <a href="#visit"><small>05</small><span data-i18n="nav.visit">Филиалы</span></a>
     </nav>
-    <p class="drawer__foot">Бишкек · три филиала · ежедневно 10:00–23:00</p>
+    <p class="drawer__foot" data-i18n="drawer.foot">Бишкек · три филиала · ежедневно 10:00–23:00</p>
   </div>
 
   <main id="main">
@@ -126,15 +154,15 @@
       <div class="hero__shade"></div>
 
       <div class="hero__content">
-        <p class="eyebrow hero__eyebrow">Кош келиңиз · Добро пожаловать</p>
+        <p class="eyebrow hero__eyebrow" data-i18n="hero.eyebrow">Кош келиңиз · Добро пожаловать</p>
         <h1 class="hero__title">
-          <span class="line"><span>Самый вкусный</span></span>
-          <span class="line"><span><em>плов</em> в Бишкеке</span></span>
+          <span class="line"><span data-i18n="hero.line1">Самый вкусный</span></span>
+          <span class="line"><span data-i18n="hero.line2"><em>плов</em> в Бишкеке</span></span>
         </h1>
-        <p class="hero__lede">Плов из большого казана, лагман ручной работы, куурдак и шашлык с мангала. Уютные залы, кабинки для компании и летние веранды — в трёх филиалах по городу.</p>
+        <p class="hero__lede" data-i18n="hero.lede">Плов из большого казана, лагман ручной работы, куурдак и шашлык с мангала. Уютные залы, кабинки для компании и летние веранды — в трёх филиалах по городу.</p>
         <div class="hero__ctas">
-          <a href="#menu" class="btn btn--solid">Смотреть меню</a>
-          <a href="#visit" class="btn btn--ghost">Наши филиалы</a>
+          <a href="#menu" class="btn btn--solid" data-i18n="hero.cta.menu">Смотреть меню</a>
+          <a href="#visit" class="btn btn--ghost" data-i18n="hero.cta.visit">Наши филиалы</a>
         </div>
       </div>
 
@@ -142,9 +170,9 @@
         <div class="rating">
           <span class="rating__score">4.5</span>
           <span class="rating__stars" aria-hidden="true">★★★★★</span>
-          <span class="rating__label">4 500+ оценок в 2ГИС</span>
+          <span class="rating__label" data-i18n="hero.rating">4 500+ оценок в 2ГИС</span>
         </div>
-        <div class="scroll-cue" aria-hidden="true"><span></span>Листайте</div>
+        <div class="scroll-cue" aria-hidden="true" data-i18n="hero.scroll"><span></span>Листайте</div>
       </div>
     </section>
 
@@ -154,43 +182,43 @@
 
       <div class="story__grid container">
         <div class="story__text">
-          <p class="eyebrow reveal">01 — Казан</p>
-          <h2 class="display reveal">Всё начинается <em>с казана.</em></h2>
-          <p class="reveal">В Центральной Азии плов — это не просто блюдо, это повод собраться. Его готовят в большом чугунном <strong>казане</strong>: сначала обжаривают мясо и жёлтую морковь, потом томят рис, пока каждое зерно не пропитается ароматом.</p>
-          <p class="reveal">В «Центре Плова» мы готовим три плова — <strong>Особый</strong> на узгенском рисе, <strong>Чайханский</strong> и <strong>Праздничный</strong> с изюмом и нутом — а рядом с ними лагман, куурдак, манты, самсу и шашлык. Приходите на обед, отмечайте с семьёй или заказывайте праздничный сет на всю компанию.</p>
-          <a href="#menu" class="link-arrow reveal">Что сегодня в казане</a>
+          <p class="eyebrow reveal" data-i18n="story.eyebrow">01 — Казан</p>
+          <h2 class="display reveal" data-i18n="story.title">Всё начинается <em>с казана.</em></h2>
+          <p class="reveal" data-i18n="story.p1">В Центральной Азии плов — это не просто блюдо, это повод собраться. Его готовят в большом чугунном <strong>казане</strong>: сначала обжаривают мясо и жёлтую морковь, потом томят рис, пока каждое зерно не пропитается ароматом.</p>
+          <p class="reveal" data-i18n="story.p2">В «Центре Плова» мы готовим три плова — <strong>Особый</strong> на узгенском рисе, <strong>Чайханский</strong> и <strong>Праздничный</strong> с изюмом и нутом — а рядом с ними лагман, куурдак, манты, самсу и шашлык. Приходите на обед, отмечайте с семьёй или заказывайте праздничный сет на всю компанию.</p>
+          <a href="#menu" class="link-arrow reveal" data-i18n="story.link">Что сегодня в казане</a>
         </div>
         <figure class="story__media">
           <div class="frame frame--tall parallax-wrap">
-            <img src="assets/photos/kazan.jpg" alt="Повар перемешивает плов в большом казане" loading="lazy" data-parallax>
+            <img src="assets/photos/kazan.jpg" alt="Повар перемешивает плов в большом казане" data-i18n-attr="alt:alt.kazan" loading="lazy" data-parallax>
           </div>
           <figure class="story__inset frame">
-            <img src="assets/photos/plov-trio.jpg" alt="Три вида плова на деревянном столе" loading="lazy">
+            <img src="assets/photos/plov-trio.jpg" alt="Три вида плова на деревянном столе" data-i18n-attr="alt:alt.trio" loading="lazy">
           </figure>
-          <figcaption>Особый · Чайханский · Праздничный</figcaption>
+          <figcaption data-i18n="story.caption">Особый · Чайханский · Праздничный</figcaption>
         </figure>
       </div>
     </section>
 
     <!-- ============ PILLARS ============ -->
-    <section class="pillars container" aria-label="Что мы делаем">
+    <section class="pillars container" aria-label="Что мы делаем" data-i18n-attr="aria-label:pillars.label">
       <article class="pillar reveal">
-        <div class="frame"><img src="assets/photos/plov-table.jpg" alt="Плов с мясом и салатом на столе" loading="lazy"></div>
+        <div class="frame"><img src="assets/photos/plov-table.jpg" alt="Плов с мясом и салатом на столе" data-i18n-attr="alt:alt.plovTable" loading="lazy"></div>
         <p class="pillar__num">01</p>
-        <h3>Плов <em>из казана</em></h3>
-        <p>Жёлтая морковь, нежная телятина и рис, который томится до последнего зерна. Добавьте чучук, перепелиные яйца и острый вах-вах.</p>
+        <h3 data-i18n="pillar1.title">Плов <em>из казана</em></h3>
+        <p data-i18n="pillar1.text">Жёлтая морковь, нежная телятина и рис, который томится до последнего зерна. Добавьте чучук, перепелиные яйца и острый вах-вах.</p>
       </article>
       <article class="pillar reveal">
-        <div class="frame"><img src="assets/photos/shashlik-spread.jpg" alt="Люля-кебаб, рёбрышки и плов на столе" loading="lazy"></div>
+        <div class="frame"><img src="assets/photos/shashlik-spread.jpg" alt="Люля-кебаб, рёбрышки и плов на столе" data-i18n-attr="alt:alt.grill" loading="lazy"></div>
         <p class="pillar__num">02</p>
-        <h3>Огонь <em>мангала</em></h3>
-        <p>Рёбрышки барашка, люля-кебаб, баранина и форель на углях — и стейки рибай, ковбой и Т-бон для тех, кто пришёл голодным.</p>
+        <h3 data-i18n="pillar2.title">Огонь <em>мангала</em></h3>
+        <p data-i18n="pillar2.text">Рёбрышки барашка, люля-кебаб, баранина и форель на углях — и стейки рибай, ковбой и Т-бон для тех, кто пришёл голодным.</p>
       </article>
       <article class="pillar reveal">
-        <div class="frame"><img src="assets/photos/booth-lamps.jpg" alt="Уютная кабинка с красными светильниками и восточными подушками" loading="lazy"></div>
+        <div class="frame"><img src="assets/photos/booth-lamps.jpg" alt="Уютная кабинка с красными светильниками и восточными подушками" data-i18n-attr="alt:alt.booth" loading="lazy"></div>
         <p class="pillar__num">03</p>
-        <h3>Дасторкон <em>для своих</em></h3>
-        <p>Отдельные кабинки, тапчаны и большие столы — для семейного обеда, дня рождения или встречи с друзьями.</p>
+        <h3 data-i18n="pillar3.title">Дасторкон <em>для своих</em></h3>
+        <p data-i18n="pillar3.text">Отдельные кабинки, тапчаны и большие столы — для семейного обеда, дня рождения или встречи с друзьями.</p>
       </article>
     </section>
 
@@ -198,12 +226,12 @@
     <section class="menu" id="menu">
       <div class="container">
         <header class="section-head">
-          <p class="eyebrow reveal">02 — Меню</p>
-          <h2 class="display reveal">Что сегодня <em>на дасторконе</em></h2>
-          <p class="section-head__note reveal">Ежедневно 10:00–23:00 · в зале, с собой и с доставкой. <strong>Цены в сомах.</strong> Вес шашлыка указан в сыром виде. Большие сеты на компанию лучше заказывать заранее.</p>
+          <p class="eyebrow reveal" data-i18n="menu.eyebrow">02 — Меню</p>
+          <h2 class="display reveal" data-i18n="menu.title">Что сегодня <em>на дасторконе</em></h2>
+          <p class="section-head__note reveal" data-i18n="menu.note">Ежедневно 10:00–23:00 · в зале, с собой и с доставкой. <strong>Цены в сомах.</strong> Вес шашлыка указан в сыром виде. Большие сеты на компанию лучше заказывать заранее.</p>
         </header>
 
-        <div class="menu__tabs" role="tablist" aria-label="Разделы меню" id="menuTabs"></div>
+        <div class="menu__tabs" role="tablist" aria-label="Разделы меню" data-i18n-attr="aria-label:menu.tabs" id="menuTabs"></div>
         <div class="menu__panel" id="menuPanel" role="tabpanel"></div>
       </div>
     </section>
@@ -212,20 +240,20 @@
     <section class="halls" id="halls">
       <div class="container">
         <header class="section-head section-head--dark">
-          <p class="eyebrow reveal">03 — Залы и кабинки</p>
-          <h2 class="display reveal">Красные фонари, <em>восточный уют</em></h2>
-          <p class="section-head__note reveal">Росписи, резные перегородки, бархатные подушки и тёплый свет. Кабинки и столики бронируйте по телефону нужного филиала.</p>
+          <p class="eyebrow reveal" data-i18n="halls.eyebrow">03 — Залы и кабинки</p>
+          <h2 class="display reveal" data-i18n="halls.title">Красные фонари, <em>восточный уют</em></h2>
+          <p class="section-head__note reveal" data-i18n="halls.note">Росписи, резные перегородки, бархатные подушки и тёплый свет. Кабинки и столики бронируйте по телефону нужного филиала.</p>
         </header>
         <div class="halls__grid">
-          <figure class="h h--a frame reveal"><img src="assets/photos/hall-arches.jpg" alt="Зал с красными арками и росписью" loading="lazy"></figure>
-          <figure class="h h--b frame reveal"><img src="assets/photos/lanterns.jpg" alt="Официантка в зале под красными фонарями" loading="lazy"></figure>
-          <figure class="h h--c frame reveal"><img src="assets/photos/cushions.jpg" alt="Кабинка с подушками в казахском орнаменте" loading="lazy"></figure>
-          <figure class="h h--d frame reveal"><img src="assets/photos/hall-wide.jpg" alt="Большой зал с красными люстрами" loading="lazy"></figure>
-          <figure class="h h--e frame reveal"><img src="assets/photos/terrace-evening.jpg" alt="Летняя веранда вечером с гирляндами" loading="lazy"></figure>
-          <figure class="h h--f frame reveal"><img src="assets/photos/tunduk.jpg" alt="Тюндюк — купол юрты под потолком" loading="lazy"></figure>
+          <figure class="h h--a frame reveal"><img src="assets/photos/hall-arches.jpg" alt="Зал с красными арками и росписью" data-i18n-attr="alt:halls.alt1" loading="lazy"></figure>
+          <figure class="h h--b frame reveal"><img src="assets/photos/lanterns.jpg" alt="Официантка в зале под красными фонарями" data-i18n-attr="alt:halls.alt2" loading="lazy"></figure>
+          <figure class="h h--c frame reveal"><img src="assets/photos/cushions.jpg" alt="Кабинка с подушками в казахском орнаменте" data-i18n-attr="alt:halls.alt3" loading="lazy"></figure>
+          <figure class="h h--d frame reveal"><img src="assets/photos/hall-wide.jpg" alt="Большой зал с красными люстрами" data-i18n-attr="alt:halls.alt4" loading="lazy"></figure>
+          <figure class="h h--e frame reveal"><img src="assets/photos/terrace-evening.jpg" alt="Летняя веранда вечером с гирляндами" data-i18n-attr="alt:halls.alt5" loading="lazy"></figure>
+          <figure class="h h--f frame reveal"><img src="assets/photos/tunduk.jpg" alt="Тюндюк — купол юрты под потолком" data-i18n-attr="alt:halls.alt6" loading="lazy"></figure>
         </div>
         <ul class="badges badges--halls reveal">
-          <li>Кабинки</li><li>Тапчаны</li><li>Летние веранды</li><li>Банкеты и тои</li><li>Детская площадка</li>
+          <li data-i18n="badge.booths">Кабинки</li><li data-i18n="badge.tapchans">Тапчаны</li><li data-i18n="badge.terraces">Летние веранды</li><li data-i18n="badge.banquets">Банкеты и тои</li><li data-i18n="badge.playground">Детская площадка</li>
         </ul>
       </div>
     </section>
@@ -233,22 +261,22 @@
     <!-- ============ GALLERY ============ -->
     <section class="gallery" id="gallery">
       <div class="gallery__head container">
-        <p class="eyebrow">04 — Из нашего Instagram</p>
-        <h2 class="display">Стол, которым <em>хочется делиться</em></h2>
+        <p class="eyebrow" data-i18n="gallery.eyebrow">04 — Из нашего Instagram</p>
+        <h2 class="display" data-i18n="gallery.title">Стол, которым <em>хочется делиться</em></h2>
       </div>
       <div class="gallery__track" id="galleryTrack">
-        <figure class="g g--w"><img src="assets/photos/plov-festive.jpg" alt="Праздничный плов с долмой и перепелиными яйцами" loading="lazy"><figcaption>Праздничный плов</figcaption></figure>
-        <figure class="g"><img src="assets/photos/manti.jpg" alt="Манты с соусом" loading="lazy"><figcaption>Манты</figcaption></figure>
-        <figure class="g"><img src="assets/photos/lagman.jpg" alt="Лагман с говядиной и овощами" loading="lazy"><figcaption>Лагман</figcaption></figure>
-        <figure class="g"><img src="assets/photos/hall-mural.jpg" alt="Зал с росписью на стенах" loading="lazy"><figcaption>Жибек-Жолу</figcaption></figure>
-        <figure class="g"><img src="assets/photos/gulchatai.jpg" alt="Гульчатай с кониной" loading="lazy"><figcaption>Гульчатай</figcaption></figure>
-        <figure class="g"><img src="assets/photos/samsa.jpg" alt="Самса с соусом" loading="lazy"><figcaption>Самса</figcaption></figure>
-        <figure class="g"><img src="assets/photos/table-lunch.jpg" alt="Обед: суп, самса и плов" loading="lazy"><figcaption>Обед в кабинке</figcaption></figure>
-        <figure class="g"><img src="assets/photos/zharkoe.jpg" alt="Жаровня из говядины на чугунной сковороде" loading="lazy"><figcaption>Жаровня</figcaption></figure>
-        <figure class="g"><img src="assets/photos/hall-lamps.jpg" alt="Зал с красными лампами" loading="lazy"><figcaption>Под фонарями</figcaption></figure>
-        <figure class="g"><img src="assets/photos/teriyaki.jpg" alt="Курица терияки с рисом" loading="lazy"><figcaption>Курица терияки</figcaption></figure>
-        <figure class="g"><img src="assets/photos/tea.jpg" alt="Фруктовый чай в чайниках" loading="lazy"><figcaption>Чай</figcaption></figure>
-        <figure class="g"><img src="assets/photos/storefront.jpg" alt="Вывеска «Центр Плова» над входом" loading="lazy"><figcaption>Добро пожаловать</figcaption></figure>
+        <figure class="g g--w"><img src="assets/photos/plov-festive.jpg" alt="Праздничный плов с долмой и перепелиными яйцами" data-i18n-attr="alt:gallery.alt1" loading="lazy"><figcaption data-i18n="gallery.cap1">Праздничный плов</figcaption></figure>
+        <figure class="g"><img src="assets/photos/manti.jpg" alt="Манты с соусом" data-i18n-attr="alt:gallery.alt2" loading="lazy"><figcaption data-i18n="gallery.cap2">Манты</figcaption></figure>
+        <figure class="g"><img src="assets/photos/lagman.jpg" alt="Лагман с говядиной и овощами" data-i18n-attr="alt:gallery.alt3" loading="lazy"><figcaption data-i18n="gallery.cap3">Лагман</figcaption></figure>
+        <figure class="g"><img src="assets/photos/hall-mural.jpg" alt="Зал с росписью на стенах" data-i18n-attr="alt:gallery.alt4" loading="lazy"><figcaption data-i18n="gallery.cap4">Жибек-Жолу</figcaption></figure>
+        <figure class="g"><img src="assets/photos/gulchatai.jpg" alt="Гульчатай с кониной" data-i18n-attr="alt:gallery.alt5" loading="lazy"><figcaption data-i18n="gallery.cap5">Гульчатай</figcaption></figure>
+        <figure class="g"><img src="assets/photos/samsa.jpg" alt="Самса с соусом" data-i18n-attr="alt:gallery.alt6" loading="lazy"><figcaption data-i18n="gallery.cap6">Самса</figcaption></figure>
+        <figure class="g"><img src="assets/photos/table-lunch.jpg" alt="Обед: суп, самса и плов" data-i18n-attr="alt:gallery.alt7" loading="lazy"><figcaption data-i18n="gallery.cap7">Обед в кабинке</figcaption></figure>
+        <figure class="g"><img src="assets/photos/zharkoe.jpg" alt="Жаровня из говядины на чугунной сковороде" data-i18n-attr="alt:gallery.alt8" loading="lazy"><figcaption data-i18n="gallery.cap8">Жаровня</figcaption></figure>
+        <figure class="g"><img src="assets/photos/hall-lamps.jpg" alt="Зал с красными лампами" data-i18n-attr="alt:gallery.alt9" loading="lazy"><figcaption data-i18n="gallery.cap9">Под фонарями</figcaption></figure>
+        <figure class="g"><img src="assets/photos/teriyaki.jpg" alt="Курица терияки с рисом" data-i18n-attr="alt:gallery.alt10" loading="lazy"><figcaption data-i18n="gallery.cap10">Курица терияки</figcaption></figure>
+        <figure class="g"><img src="assets/photos/tea.jpg" alt="Фруктовый чай в чайниках" data-i18n-attr="alt:gallery.alt11" loading="lazy"><figcaption data-i18n="gallery.cap11">Чай</figcaption></figure>
+        <figure class="g"><img src="assets/photos/storefront.jpg" alt="Вывеска «Центр Плова» над входом" data-i18n-attr="alt:gallery.alt12" loading="lazy"><figcaption data-i18n="gallery.cap12">Добро пожаловать</figcaption></figure>
       </div>
     </section>
 
@@ -256,26 +284,26 @@
     <section class="reviews" id="reviews" aria-labelledby="reviewsTitle">
       <div class="reviews__grid container">
         <div class="reviews__voices">
-          <p class="eyebrow">05 — Книга гостей</p>
+          <p class="eyebrow" data-i18n="reviews.eyebrow">05 — Книга гостей</p>
           <div class="score">
             <span class="score__num">4.5</span>
             <div>
               <span class="score__stars" aria-hidden="true">★★★★★</span>
-              <a class="score__label" href="https://2gis.kg/bishkek/search/%D0%A6%D0%B5%D0%BD%D1%82%D1%80%20%D0%BF%D0%BB%D0%BE%D0%B2%D0%B0" target="_blank" rel="noopener">4 500+ оценок в 2ГИС →</a>
+              <a class="score__label" href="https://2gis.kg/bishkek/search/%D0%A6%D0%B5%D0%BD%D1%82%D1%80%20%D0%BF%D0%BB%D0%BE%D0%B2%D0%B0" target="_blank" rel="noopener" data-i18n="reviews.score">4 500+ оценок в 2ГИС →</a>
             </div>
           </div>
           <div class="voices__slides" id="voices">
             <blockquote class="voice is-active">
-              <p>«Плов и мясо по-казахски очень вкусные, все ингредиенты свежие».</p>
-              <cite>Гость · 2ГИС</cite>
+              <p data-i18n="reviews.q1">«Плов и мясо по-казахски очень вкусные, все ингредиенты свежие».</p>
+              <cite data-i18n="reviews.cite">Гость · 2ГИС</cite>
             </blockquote>
             <blockquote class="voice">
-              <p>«Внутри очень приятно и уютно, есть отдельные столики и тапчаны».</p>
-              <cite>Гость · 2ГИС</cite>
+              <p data-i18n="reviews.q2">«Внутри очень приятно и уютно, есть отдельные столики и тапчаны».</p>
+              <cite data-i18n="reviews.cite">Гость · 2ГИС</cite>
             </blockquote>
             <blockquote class="voice">
-              <p>«Вкусно. Шашлык, салат, особенно салат с баклажанами. Советую».</p>
-              <cite>Гость · 2ГИС</cite>
+              <p data-i18n="reviews.q3">«Вкусно. Шашлык, салат, особенно салат с баклажанами. Советую».</p>
+              <cite data-i18n="reviews.cite">Гость · 2ГИС</cite>
             </blockquote>
           </div>
           <p class="voices__count"><span id="voiceIndex">1</span> / 3</p>
@@ -283,29 +311,29 @@
 
         <div class="rate-card">
           <svg class="rate-card__pattern" aria-hidden="true"><rect width="100%" height="100%" fill="url(#ornament-gold)"/></svg>
-          <h2 class="rate-card__title" id="reviewsTitle">Как вам <em>наш плов?</em></h2>
-          <p class="rate-card__lede">Каждый отзыв помогает нам становиться лучше. Выберите филиал, где вы были, — это займёт полминуты.</p>
+          <h2 class="rate-card__title" id="reviewsTitle" data-i18n="rate.title">Как вам <em>наш плов?</em></h2>
+          <p class="rate-card__lede" data-i18n="rate.lede">Каждый отзыв помогает нам становиться лучше. Выберите филиал, где вы были, — это займёт полминуты.</p>
 
-          <div class="branch-pick" role="radiogroup" aria-label="Филиал" id="reviewBranches"></div>
+          <div class="branch-pick" role="radiogroup" aria-label="Филиал" data-i18n-attr="aria-label:rate.branch" id="reviewBranches"></div>
 
           <fieldset class="stars" id="stars">
-            <legend class="sr-only">Оцените визит</legend>
-            <button type="button" data-v="1" aria-label="1 звезда">★</button>
-            <button type="button" data-v="2" aria-label="2 звезды">★</button>
-            <button type="button" data-v="3" aria-label="3 звезды">★</button>
-            <button type="button" data-v="4" aria-label="4 звезды">★</button>
-            <button type="button" data-v="5" aria-label="5 звёзд">★</button>
+            <legend class="sr-only" data-i18n="rate.legend">Оцените визит</legend>
+            <button type="button" data-v="1" aria-label="1 звезда" data-i18n-attr="aria-label:rate.star1">★</button>
+            <button type="button" data-v="2" aria-label="2 звезды" data-i18n-attr="aria-label:rate.star2">★</button>
+            <button type="button" data-v="3" aria-label="3 звезды" data-i18n-attr="aria-label:rate.star3">★</button>
+            <button type="button" data-v="4" aria-label="4 звезды" data-i18n-attr="aria-label:rate.star4">★</button>
+            <button type="button" data-v="5" aria-label="5 звёзд" data-i18n-attr="aria-label:rate.star5">★</button>
           </fieldset>
-          <p class="stars__hint" id="starsHint" aria-live="polite">Нажмите на звезду — мы откроем 2ГИС, чтобы ваша оценка засчиталась.</p>
+          <p class="stars__hint" id="starsHint" aria-live="polite" data-i18n="rate.hint">Нажмите на звезду — мы откроем 2ГИС, чтобы ваша оценка засчиталась.</p>
 
           <div class="rate-card__actions">
-            <a class="btn btn--solid" id="reviewLink" href="#" target="_blank" rel="noopener">Оставить отзыв в 2ГИС</a>
-            <button class="btn btn--ghost" type="button" id="copyReview">Скопировать ссылку</button>
+            <a class="btn btn--solid" id="reviewLink" href="#" target="_blank" rel="noopener" data-i18n="rate.write">Оставить отзыв в 2ГИС</a>
+            <button class="btn btn--ghost" type="button" id="copyReview" data-i18n="rate.copy">Скопировать ссылку</button>
           </div>
 
           <div class="rate-card__qr">
-            <div class="qr" id="reviewQr" role="img" aria-label="QR-код со ссылкой на отзывы выбранного филиала в 2ГИС"></div>
-            <p><strong>С телефона?</strong> Отсканируйте код и оставьте отзыв прямо за столом.</p>
+            <div class="qr" id="reviewQr" role="img" data-i18n-attr="aria-label:rate.qrAlt" aria-label="QR-код со ссылкой на отзывы выбранного филиала в 2ГИС"></div>
+            <p data-i18n="rate.qr"><strong>С телефона?</strong> Отсканируйте код и оставьте отзыв прямо за столом.</p>
           </div>
         </div>
       </div>
@@ -315,22 +343,22 @@
     <section class="visit" id="visit">
       <div class="container">
         <header class="section-head section-head--dark">
-          <p class="eyebrow reveal">06 — Филиалы</p>
-          <h2 class="display reveal">Три адреса, <em>один казан</em></h2>
-          <p class="section-head__note reveal">Все филиалы работают ежедневно с 10:00 до 23:00. Бронь кабинок и столиков, заказ с собой и доставка — по телефону филиала.</p>
+          <p class="eyebrow reveal" data-i18n="visit.eyebrow">06 — Филиалы</p>
+          <h2 class="display reveal" data-i18n="visit.title">Три адреса, <em>один казан</em></h2>
+          <p class="section-head__note reveal" data-i18n="visit.note">Все филиалы работают ежедневно с 10:00 до 23:00. Бронь кабинок и столиков, заказ с собой и доставка — по телефону филиала.</p>
         </header>
         <div class="visit__grid">
-          <div class="branches" id="branches" role="tablist" aria-label="Филиалы"></div>
+          <div class="branches" id="branches" role="tablist" aria-label="Филиалы" data-i18n-attr="aria-label:nav.visit"></div>
           <div class="visit__map frame">
             <iframe id="branchMap" title="Карта филиала «Центр Плова»" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
           </div>
         </div>
         <div class="order reveal" id="order">
-          <p class="order__label">Доставка и заказ с собой</p>
+          <p class="order__label" data-i18n="order.label">Доставка и заказ с собой</p>
           <div class="order__buttons">
             <a class="order-btn order-btn--glovo" data-delivery="glovo" target="_blank" rel="noopener" hidden><span class="order-btn__dot"></span>Glovo</a>
-            <a class="order-btn order-btn--yandex" data-delivery="yandex" target="_blank" rel="noopener" hidden><span class="order-btn__dot"></span>Яндекс Еда</a>
-            <a class="order-btn" href="https://www.instagram.com/centr_plova/" target="_blank" rel="noopener"><span class="order-btn__dot"></span>Написать в Instagram</a>
+            <a class="order-btn order-btn--yandex" data-delivery="yandex" target="_blank" rel="noopener" hidden><span class="order-btn__dot"></span><span data-i18n="order.yandex">Яндекс Еда</span></a>
+            <a class="order-btn" href="https://www.instagram.com/centr_plova/" target="_blank" rel="noopener"><span class="order-btn__dot"></span><span data-i18n="order.instagram">Написать в Instagram</span></a>
           </div>
         </div>
       </div>
@@ -345,10 +373,10 @@
       <div class="final__shade"></div>
       <div class="final__content container">
         <svg class="final__mark" aria-hidden="true"><use href="#kazan"/></svg>
-        <h2 class="display">Чай уже заварен.<br><em>Ваш стол ждёт.</em></h2>
+        <h2 class="display" data-i18n="final.title">Чай уже заварен.<br><em>Ваш стол ждёт.</em></h2>
         <div class="hero__ctas">
-          <a href="#visit" class="btn btn--solid">Забронировать стол</a>
-          <a href="#reviews" class="btn btn--ghost">Оставить отзыв</a>
+          <a href="#visit" class="btn btn--solid" data-i18n="final.book">Забронировать стол</a>
+          <a href="#reviews" class="btn btn--ghost" data-i18n="final.review">Оставить отзыв</a>
         </div>
       </div>
     </section>
@@ -360,13 +388,13 @@
     <div class="footer__grid container">
       <div>
         <a href="#top" class="nav__brand"><svg class="nav__mark"><use href="#kazan"/></svg><span class="nav__name">Центр <em>Плова</em></span></a>
-        <p class="footer__tag">У нас самый вкусный плов 🧡<br>Ак жол — доброго пути!</p>
+        <p class="footer__tag" data-i18n="footer.tag">У нас самый вкусный плов 🧡<br>Ак жол — доброго пути!</p>
       </div>
-      <div><h4>Жибек-Жолу</h4><p>пр. Жибек-Жолу, 527<br><a href="tel:+996550887777">0550 887 777</a></p></div>
-      <div><h4>Түгөлбай Ата</h4><p>ул. Түгөлбай Ата, 1/1<br><a href="tel:+996777977779">0777 977 779</a></p></div>
-      <div><h4>5 микрорайон</h4><p>5 мкр, 66Б<br><a href="tel:+996556777779">0556 777 779</a></p></div>
+      <div><h4 data-i18n="footer.b1">Жибек-Жолу</h4><p><span data-i18n="footer.b1addr">пр. Жибек-Жолу, 527</span><br><a href="tel:+996550887777">0550 887 777</a></p></div>
+      <div><h4 data-i18n="footer.b2">Түгөлбай Ата</h4><p><span data-i18n="footer.b2addr">ул. Түгөлбай Ата, 1/1</span><br><a href="tel:+996777977779">0777 977 779</a></p></div>
+      <div><h4 data-i18n="footer.b3">5 микрорайон</h4><p><span data-i18n="footer.b3addr">5 мкр, 66Б</span><br><a href="tel:+996556777779">0556 777 779</a></p></div>
     </div>
-    <p class="footer__legal container">© <span id="year">2026</span> Центр Плова, Бишкек · Ежедневно 10:00–23:00 · <a href="https://www.instagram.com/centr_plova/" target="_blank" rel="noopener">@centr_plova</a></p>
+    <p class="footer__legal container">© <span id="year">2026</span> <span data-i18n="footer.legal">Центр Плова, Бишкек · Ежедневно 10:00–23:00</span> · <a href="https://www.instagram.com/centr_plova/" target="_blank" rel="noopener">@centr_plova</a></p>
   </footer>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>

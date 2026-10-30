@@ -1,5 +1,6 @@
 import { MENU, TAG_LABELS } from './menu-data.js';
 import { BRANCHES, DELIVERY, reviewUrl, mapEmbed, directionsUrl } from './site-config.js';
+import { initI18n, onLangChange, lang, t, tr } from './i18n.js';
 
 const { gsap, ScrollTrigger, Lenis } = window;
 const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -7,6 +8,7 @@ const hasGsap = Boolean(gsap && ScrollTrigger);
 
 document.documentElement.classList.add('js');
 document.getElementById('year').textContent = new Date().getFullYear();
+initI18n();
 
 /* ---------------------------------------------------------
    Smooth scroll
@@ -128,7 +130,7 @@ const drawerOpen = () => burger.getAttribute('aria-expanded') === 'true';
 function openDrawer() {
   drawer.hidden = false;
   burger.setAttribute('aria-expanded', 'true');
-  burger.setAttribute('aria-label', 'Закрыть меню');
+  burger.setAttribute('aria-label', t('nav.close'));
   document.body.classList.add('is-locked');
   lenis?.stop();
   if (hasGsap && !reduceMotion) {
@@ -139,7 +141,7 @@ function openDrawer() {
 function closeDrawer() {
   if (!drawerOpen()) return;
   burger.setAttribute('aria-expanded', 'false');
-  burger.setAttribute('aria-label', 'Открыть меню');
+  burger.setAttribute('aria-label', t('nav.open'));
   document.body.classList.remove('is-locked');
   lenis?.start();
   drawer.hidden = true;
@@ -152,19 +154,22 @@ document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeDrawe
    --------------------------------------------------------- */
 const tabsEl = document.getElementById('menuTabs');
 const panelEl = document.getElementById('menuPanel');
-const money = (p) => `${Array.isArray(p) ? p.join(' / ') : p} с`;
+const money = (p) => `${Array.isArray(p) ? p.join(' / ') : p} ${t('currency')}`;
+// "2,5 кг" → "2.5 kg" in English; unit words come from translations.js
+const portion = (p) => p.split(' ')
+  .map((w) => t('units')[w] ?? (lang === 'en' ? w.replace(/(\d),(\d)/, '$1.$2') : w)).join(' ');
 
 function renderCategory(cat) {
   panelEl.setAttribute('aria-labelledby', `tab-${cat.id}`);
   panelEl.innerHTML = cat.items.map((item) => `
     <article class="menu-item">
       <div>
-        <h3 class="menu-item__name">${item.name}</h3>
-        ${item.portion ? `<span class="menu-item__native">${item.portion}</span>` : ''}
+        <h3 class="menu-item__name">${tr(item.name)}</h3>
+        ${item.portion ? `<span class="menu-item__native">${portion(item.portion)}</span>` : ''}
       </div>
       <span class="menu-item__price">${money(item.price)}</span>
-      ${item.desc ? `<p class="menu-item__desc">${item.desc}</p>` : ''}
-      ${item.tags?.length ? `<div class="menu-item__tags">${item.tags.map((t) => `<span class="tag tag--${t}">${TAG_LABELS[t]}</span>`).join('')}</div>` : ''}
+      ${item.desc ? `<p class="menu-item__desc">${tr(item.desc)}</p>` : ''}
+      ${item.tags?.length ? `<div class="menu-item__tags">${item.tags.map((tag) => `<span class="tag tag--${tag}">${tr(TAG_LABELS[tag])}</span>`).join('')}</div>` : ''}
     </article>`).join('');
   if (hasGsap && !reduceMotion) {
     gsap.from(panelEl.children, { y: 24, opacity: 0, duration: 0.7, stagger: 0.04, ease: 'expo.out' });
@@ -177,7 +182,7 @@ MENU.forEach((cat, i) => {
   b.id = `tab-${cat.id}`;
   b.type = 'button';
   b.role = 'tab';
-  b.textContent = cat.label;
+  b.textContent = tr(cat.label);
   b.setAttribute('aria-selected', String(i === 0));
   b.tabIndex = i === 0 ? 0 : -1;
   b.addEventListener('click', () => selectTab(i));
@@ -202,6 +207,13 @@ tabsEl.addEventListener('keydown', (e) => {
 });
 renderCategory(MENU[0]);
 
+onLangChange(() => {
+  [...tabsEl.children].forEach((b, i) => { b.textContent = tr(MENU[i].label); });
+  const cur = [...tabsEl.children].findIndex((b) => b.getAttribute('aria-selected') === 'true');
+  renderCategory(MENU[Math.max(cur, 0)]);
+  burger.setAttribute('aria-label', t(drawerOpen() ? 'nav.close' : 'nav.open'));
+});
+
 /* ---------------------------------------------------------
    Delivery apps (buttons show only once configured)
    --------------------------------------------------------- */
@@ -217,32 +229,39 @@ document.querySelectorAll('[data-delivery]').forEach((el) => {
 const branchesEl = document.getElementById('branches');
 const branchMap = document.getElementById('branchMap');
 
-branchesEl.innerHTML = BRANCHES.map((b, i) => `
-  <article class="branch reveal${i === 0 ? ' is-active' : ''}" data-i="${i}">
-    <button class="branch__head" type="button" role="tab" aria-selected="${i === 0}" aria-controls="branchMap">
+let activeBranch = 0;
+
+// The cards fade in on scroll the first time; re-renders (language switch) skip that.
+function renderBranches(reveal) {
+  branchesEl.innerHTML = BRANCHES.map((b, i) => `
+  <article class="branch${reveal ? ' reveal' : ''}${i === activeBranch ? ' is-active' : ''}" data-i="${i}">
+    <button class="branch__head" type="button" role="tab" aria-selected="${i === activeBranch}" aria-controls="branchMap">
       <span class="branch__num">0${i + 1}</span>
-      <span class="branch__name">${b.name}</span>
+      <span class="branch__name">${tr(b.name)}</span>
       <span class="branch__rating">★ ${b.rating}</span>
     </button>
-    <p class="branch__addr">${b.address}</p>
-    <p class="branch__hours">${b.hours}</p>
+    <p class="branch__addr">${tr(b.address)}</p>
+    <p class="branch__hours">${tr(b.hours)}</p>
     <div class="branch__actions">
       <a class="btn btn--solid" href="tel:${b.phone}">${b.phoneLabel}</a>
-      <a class="link-arrow" href="${directionsUrl(b)}" target="_blank" rel="noopener">Маршрут</a>
-      <a class="link-arrow" href="${b.twoGis}" target="_blank" rel="noopener">2ГИС</a>
+      <a class="link-arrow" href="${directionsUrl(b)}" target="_blank" rel="noopener">${t('branch.route')}</a>
+      <a class="link-arrow" href="${b.twoGis}" target="_blank" rel="noopener">${t('branch.2gis')}</a>
     </div>
-    <ul class="branch__tags">${b.features.map((f) => `<li>${f}</li>`).join('')}</ul>
+    <ul class="branch__tags">${b.features.map((f) => `<li>${tr(f)}</li>`).join('')}</ul>
   </article>`).join('');
+  branchesEl.querySelectorAll('.branch__head').forEach((btn, i) => btn.addEventListener('click', () => selectBranch(i)));
+}
 
 function selectBranch(i) {
+  activeBranch = i;
   [...branchesEl.children].forEach((el, j) => {
     el.classList.toggle('is-active', i === j);
     el.querySelector('.branch__head').setAttribute('aria-selected', String(i === j));
   });
   branchMap.src = mapEmbed(BRANCHES[i]);
-  branchMap.title = `Карта: «Центр Плова», ${BRANCHES[i].address}`;
+  branchMap.title = t('map.title', tr(BRANCHES[i].address));
 }
-branchesEl.querySelectorAll('.branch__head').forEach((btn, i) => btn.addEventListener('click', () => selectBranch(i)));
+renderBranches(true);
 selectBranch(0);
 
 /* ---------------------------------------------------------
@@ -267,14 +286,18 @@ function setReviewBranch(i) {
   [...pickEl.children].forEach((b, j) => b.setAttribute('aria-checked', String(i === j)));
   drawQr(reviewUrl(reviewBranch));
 }
-pickEl.innerHTML = BRANCHES.map((b, i) => `<button type="button" role="radio" aria-checked="${i === 0}">${b.name}</button>`).join('');
+pickEl.innerHTML = BRANCHES.map((b, i) => `<button type="button" role="radio" aria-checked="${i === 0}">${tr(b.name)}</button>`).join('');
 [...pickEl.children].forEach((b, i) => b.addEventListener('click', () => setReviewBranch(i)));
 setReviewBranch(0);
 
+onLangChange(() => {
+  renderBranches(false);
+  branchMap.title = t('map.title', tr(BRANCHES[activeBranch].address));
+  [...pickEl.children].forEach((b, i) => { b.textContent = tr(BRANCHES[i].name); });
+});
+
 const stars = [...document.querySelectorAll('#stars button')];
 const starsHint = document.getElementById('starsHint');
-const HINTS = ['', 'Спасибо, что рассказали — мы читаем каждый отзыв.', 'Спасибо — напишите, что нам исправить.', 'Спасибо! Что сделать, чтобы в следующий раз было пять?', 'Рахмат! Расскажите другим, что вам понравилось.', 'Рахмат! Расскажите другим, что вам понравилось.'];
-const starWord = (n) => (n === 1 ? 'звезду' : n < 5 ? 'звезды' : 'звёзд');
 let chosen = 0;
 const paint = (n) => stars.forEach((b, i) => b.classList.toggle('is-on', i < n));
 stars.forEach((b, i) => {
@@ -284,7 +307,7 @@ stars.forEach((b, i) => {
     chosen = i + 1;
     paint(chosen);
     stars.forEach((s2, j) => s2.setAttribute('aria-pressed', String(j === i)));
-    starsHint.textContent = `${HINTS[chosen]} Открываем 2ГИС — поставьте там ${chosen} ${starWord(chosen)}.`;
+    starsHint.textContent = t('stars.hint', chosen);
     window.open(reviewUrl(reviewBranch), '_blank', 'noopener');
   });
 });
@@ -293,17 +316,18 @@ document.getElementById('stars').addEventListener('mouseleave', () => paint(chos
 document.getElementById('copyReview').addEventListener('click', async (e) => {
   const btn = e.currentTarget;
   const url = reviewUrl(reviewBranch);
+  const label = btn.textContent;
   try {
     await navigator.clipboard.writeText(url);
-    btn.textContent = 'Скопировано ✓';
+    btn.textContent = t('copy.done');
   } catch {
     const ta = Object.assign(document.createElement('textarea'), { value: url });
     document.body.appendChild(ta);
     ta.select();
-    btn.textContent = document.execCommand('copy') ? 'Скопировано ✓' : 'Не удалось';
+    btn.textContent = document.execCommand('copy') ? t('copy.done') : t('copy.failed');
     ta.remove();
   }
-  setTimeout(() => { btn.textContent = 'Скопировать ссылку'; }, 2200);
+  setTimeout(() => { btn.textContent = label; }, 2200);
 });
 
 /* ---------------------------------------------------------
